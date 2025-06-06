@@ -1,7 +1,7 @@
-const express = require('express');
-const serverless = require('serverless-http');
-const cors = require('cors');
-const axios = require('axios');
+import express from 'express';
+import serverless from 'serverless-http';
+import cors from 'cors';
+import axios from 'axios';
 
 const app = express();
 
@@ -69,7 +69,6 @@ app.post('/api/gerar-pix', async (req, res) => {
     console.error("❌ Erro ao gerar Pix:", error);
 
     if (error.response) {
-      console.error('🔴 Dados do erro:', error.response.data);
       return res.status(error.response.status).json(error.response.data);
     }
 
@@ -77,5 +76,5 @@ app.post('/api/gerar-pix', async (req, res) => {
   }
 });
 
-module.exports = app;
-module.exports.handler = serverless(app);
+// 👉 AQUI no final:
+export default serverless(app);
