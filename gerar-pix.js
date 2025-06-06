@@ -10,14 +10,13 @@ app.use(express.json());
 
 app.post('/api/gerar-pix', async (req, res) => {
   try {
-
-    const { name, document } = req.body;
+    const { name, document } = req.body || {};
 
     const client = {
-      name: name,
+      name: name || "Cliente Teste",
       email: "cliente@email.com",
       phone: "11999999999",
-      document: document
+      document: document || "12345678900"
     };
 
     const products = [
@@ -58,7 +57,7 @@ app.post('/api/gerar-pix', async (req, res) => {
       }
     );
 
-    res.status(200).json({
+    return res.status(200).json({
       pixCode: resposta.data.pix.code,
       pixQrCodeBase64: resposta.data.pix.base64,
       orderId: resposta.data.order.id,
@@ -68,13 +67,15 @@ app.post('/api/gerar-pix', async (req, res) => {
 
   } catch (error) {
     console.error("❌ Erro ao gerar Pix:", error);
+
     if (error.response) {
+      console.error('🔴 Dados do erro:', error.response.data);
       return res.status(error.response.status).json(error.response.data);
     }
+
     return res.status(500).json({ error: error.message });
   }
 });
 
-// Exportação para Vercel (serverless)
 module.exports = app;
 module.exports.handler = serverless(app);
