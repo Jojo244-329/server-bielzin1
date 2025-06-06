@@ -53,16 +53,17 @@ app.post('/api/gerar-pix', async (req, res) => {
     console.log("📡 Enviando payload para OneTimePay:", payloadGateway);
 
     const resposta = await axios.post(
-      'https://app.onetimepay.com.br/api/v1/gateway/pix/receive',
-      payloadGateway,
-      {
-        headers: {
-          'x-public-key': 'yt0313861_y42n57er76i3n8iu',
-          'x-secret-key': '7w9xbx75ijwk7ewxd4soizd7giiwrn5e416n5mjsub4qa8vgrrb1tntk1pfzzpj6',
-          'Content-Type': 'application/json'
-        }
-      }
-    );
+  'https://app.onetimepay.com.br/api/v1/gateway/pix/receive',
+  payloadGateway,
+  {
+    headers: {
+      'x-public-key': 'yt0313861_y42n57er76i3n8iu',
+      'x-secret-key': '7w9xbx75ijwk7ewxd4soizd7giiwrn5e416n5mjsub4qa8vgrrb1tntk1pfzzpj6',
+      'Content-Type': 'application/json'
+    },
+    timeout: 8000 // ⏰ 8 segundos no máximo
+  }
+);
 
     console.log("✅ PIX gerado com sucesso:", resposta.data);
 
