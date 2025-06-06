@@ -1,10 +1,14 @@
+const express = require('express');
+const serverless = require('serverless-http');
+const cors = require('cors');
 const axios = require('axios');
 
-module.exports = async (req, res) => {
-  if (req.method !== "POST") {
-    return res.status(405).json({ error: "Método não permitido" });
-  }
+const app = express();
 
+app.use(cors({ origin: '*' }));
+app.use(express.json());
+
+app.post('/api/gerar-pix', async (req, res) => {
   try {
     const client = {
       name: client.name,
@@ -23,8 +27,8 @@ module.exports = async (req, res) => {
     ];
 
     const amountFinal = 78.47;
-
     const identifier = `id-${Date.now()}`;
+
     const dataAmanha = new Date();
     dataAmanha.setDate(dataAmanha.getDate() + 1);
     const dueDate = dataAmanha.toISOString().split('T')[0];
@@ -51,7 +55,7 @@ module.exports = async (req, res) => {
       }
     );
 
-    return res.status(200).json({
+    res.status(200).json({
       pixCode: resposta.data.pix.code,
       pixQrCodeBase64: resposta.data.pix.base64,
       orderId: resposta.data.order.id,
@@ -60,10 +64,14 @@ module.exports = async (req, res) => {
     });
 
   } catch (error) {
-    console.error("Erro ao gerar Pix:", error);
+    console.error("❌ Erro ao gerar Pix:", error);
     if (error.response) {
       return res.status(error.response.status).json(error.response.data);
     }
     return res.status(500).json({ error: error.message });
   }
-};
+});
+
+// Exportação para Vercel (serverless)
+module.exports = app;
+module.exports.handler = serverless(app);
