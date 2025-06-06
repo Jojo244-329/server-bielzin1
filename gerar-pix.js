@@ -48,8 +48,8 @@ app.post('/api/gerar-pix', async (req, res) => {
       payloadGateway,
       {
         headers: {
-          'x-public-key': process.env.PUBLIC_KEY,
-          'x-secret-key': process.env.SECRET_KEY,
+          'x-public-key': 'yt0313861_y42n57er76i3n8iu',
+          'x-secret-key': '7w9xbx75ijwk7ewxd4soizd7giiwrn5e416n5mjsub4qa8vgrrb1tntk1pfzzpj6',
           'Content-Type': 'application/json'
         }
       }
