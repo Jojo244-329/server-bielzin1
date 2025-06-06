@@ -10,11 +10,14 @@ app.use(express.json());
 
 app.post('/api/gerar-pix', async (req, res) => {
   try {
+
+    const { name, document } = req.body;
+
     const client = {
-      name: client.name,
+      name: name,
       email: "cliente@email.com",
       phone: "11999999999",
-      document: client.document
+      document: document
     };
 
     const products = [
