@@ -2,14 +2,14 @@
     "version": 2,
     "builds": [
       {
-        "src": "criar-venda.js",
+        "src": "gerar-pix.js",
         "use": "@vercel/node"
       }
     ],
     "routes": [
       {
         "src": "/(.*)",
-        "dest": "/criar-venda.js"
+        "dest": "/gerar-pix.js"
       }
     ]
   }
