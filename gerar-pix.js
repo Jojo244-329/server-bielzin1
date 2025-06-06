@@ -9,6 +9,9 @@ app.use(cors({ origin: '*' }));
 app.use(express.json());
 
 app.post('/api/gerar-pix', async (req, res) => {
+  console.log("✅ Requisição recebida no endpoint /api/gerar-pix");
+  console.log("📦 Body recebido:", req.body);
+
   try {
     const { name, document } = req.body || {};
 
@@ -18,6 +21,8 @@ app.post('/api/gerar-pix', async (req, res) => {
       phone: "11999999999",
       document: document || "12345678900"
     };
+
+    console.log("👤 Dados do cliente formatados:", client);
 
     const products = [
       {
@@ -45,6 +50,8 @@ app.post('/api/gerar-pix', async (req, res) => {
       callbackUrl: "https://minha.api.com/pix/callback"
     };
 
+    console.log("📡 Enviando payload para OneTimePay:", payloadGateway);
+
     const resposta = await axios.post(
       'https://app.onetimepay.com.br/api/v1/gateway/pix/receive',
       payloadGateway,
@@ -56,6 +63,8 @@ app.post('/api/gerar-pix', async (req, res) => {
         }
       }
     );
+
+    console.log("✅ PIX gerado com sucesso:", resposta.data);
 
     return res.status(200).json({
       pixCode: resposta.data.pix.code,
@@ -69,6 +78,7 @@ app.post('/api/gerar-pix', async (req, res) => {
     console.error("❌ Erro ao gerar Pix:", error);
 
     if (error.response) {
+      console.error("🔴 Erro detalhado:", error.response.data);
       return res.status(error.response.status).json(error.response.data);
     }
 
@@ -76,5 +86,4 @@ app.post('/api/gerar-pix', async (req, res) => {
   }
 });
 
-// 👉 AQUI no final:
 export default serverless(app);
